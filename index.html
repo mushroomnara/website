@@ -42,10 +42,34 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  .site-header {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 32px 28px 0;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .site-nav a {
+    font-size: 15px;
+    text-decoration: none;
+  }
+
+  .site-nav a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  .site-nav a[aria-current="page"] { font-weight: 600; }
+
   main {
     max-width: var(--max-w);
     margin: 0 auto;
-    padding: 132px 28px 88px;
+    padding: 64px 28px 88px;
   }
 
   section { margin-bottom: 104px; }
@@ -152,7 +176,8 @@
   }
 
   @media (max-width: 480px) {
-    main { padding: 88px 22px 64px; }
+    .site-header { padding: 24px 22px 0; }
+    main { padding: 48px 22px 64px; }
     section { margin-bottom: 80px; }
     h1 { font-size: 22px; }
     .work-row { flex-direction: column; gap: 2px; }
@@ -160,6 +185,14 @@
 </style>
 </head>
 <body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+  </nav>
+</header>
 
 <main>
 
@@ -259,6 +292,16 @@
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.querySelectorAll('a[href="index.html"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const current = location.pathname.split('/').pop() || 'index.html';
+      if (current === 'index.html') {
+        e.preventDefault();
+        location.reload();
+      }
+    });
+  });
 </script>
 
 </body>

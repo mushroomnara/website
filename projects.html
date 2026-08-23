@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Ella Yuna Jeong</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="description" content="Ella Yuna Jeong, product designer based in Berlin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #fafaf9;
+    --ink: #17171a;
+    --line: #e4e3e0;
+    --max-w: 640px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .site-header {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 32px 28px 0;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .site-nav a {
+    font-size: 15px;
+    text-decoration: none;
+  }
+
+  .site-nav a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  .site-nav a[aria-current="page"] { font-weight: 600; }
+
+  main {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 64px 28px 88px;
+  }
+
+  section { margin-bottom: 104px; }
+
+  h1 {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 27px;
+    letter-spacing: -0.01em;
+    margin: 0 0 26px;
+  }
+
+  p {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 0 0 18px;
+    opacity: 0.6;
+  }
+  p:last-child { margin-bottom: 0; }
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+  a:hover { text-decoration-color: var(--ink); }
+
+  @media (max-width: 480px) {
+    .site-header { padding: 24px 22px 0; }
+    main { padding: 48px 22px 64px; }
+    section { margin-bottom: 80px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html" aria-current="page">Projects</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h1>Coming soon 🙂</h1>
+    <p><a href="index.html">Go back</a></p>
+  </section>
+</main>
+
+<script>
+  document.querySelectorAll('a[href="index.html"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const current = location.pathname.split('/').pop() || 'index.html';
+      if (current === 'index.html') {
+        e.preventDefault();
+        location.reload();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
