@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function () {
+  var stored = localStorage.getItem('theme');
+  var theme = stored;
+  if (!theme) {
+    var hour = parseInt(new Intl.DateTimeFormat('en-GB', { hour: 'numeric', hour12: false, timeZone: 'Europe/Berlin' }).format(new Date()), 10);
+    theme = (hour >= 19 || hour < 7) ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — Ella Yuna Jeong</title>
@@ -18,6 +29,12 @@
     --max-w: 640px;
   }
 
+  :root[data-theme="dark"] {
+    --bg: #18181b;
+    --ink: #f5f5f5;
+    --line: rgba(255, 255, 255, 0.18);
+  }
+
   * { box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
@@ -33,15 +50,41 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     max-width: var(--max-w);
     width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
     padding: 32px 28px 0;
   }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .theme-toggle:hover {
+    transform: scale(1.12);
+    opacity: 0.7;
+  }
+
+  .theme-toggle .icon-sun { display: none; }
+
+  :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun { display: inline-flex; }
 
   .site-nav {
     display: flex;
@@ -53,21 +96,25 @@
     font-size: 15px;
     color: var(--ink);
     text-decoration: none;
+    transition: opacity 0.15s ease;
   }
 
   .site-nav a:not(.home-dot):hover {
     text-decoration: underline;
     text-decoration-color: var(--ink);
     text-underline-offset: 3px;
+    opacity: 0.65;
   }
 
   .site-nav a[aria-current="page"] { font-weight: 600; }
 
-  .home-dot {
+  a.home-dot {
     display: inline-flex;
     width: 15px;
     height: 15px;
     border-radius: 50%;
+    outline: 8px solid transparent;
+    transition: opacity 0.15s ease, outline-color 0.2s ease;
   }
 
   .home-dot .dot {
@@ -75,11 +122,14 @@
     height: 100%;
     border-radius: 50%;
     background: #ccccff;
+    transition: transform 0.15s ease;
   }
+
+  .home-dot:hover .dot { transform: scale(1.15); }
 
   .home-dot[aria-current="page"],
   .home-dot:hover {
-    outline: 8px solid rgba(255, 255, 0, 0.1);
+    outline-color: rgba(255, 255, 0, 0.1);
     outline-offset: 0;
   }
 
@@ -154,11 +204,15 @@
     <a href="about.html" aria-current="page">About</a>
     <a href="projects.html">Projects</a>
   </nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+    <span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></span>
+    <span class="icon-moon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></span>
+  </button>
 </header>
 
 <main>
   <section>
-    <p>The action of turning an idea into something tangible has always been what makes me feel alive — the emotions and curiosities that come with the process. I found product design: same instinct, but pointed at solving a real problem for people.</p>
+    <p>The action of turning an idea into something tangible has always been what makes me feel alive — the emotions and curiosities that come with the process. Somewhere along the way I found product design: same instinct, but pointed at solving a real problem for people.</p>
     <p>I'm also drawn to the storytelling side of design — how a brand's personality gets translated into different channels and the visual expression &amp; personification of the brand itself.</p>
     <p>Outside of work: I believe fungi ecosystems are extremely underrated, somehow all my favorite movies and shows are dystopian fiction, i love observing animals (and humans too), everything to do with psychology and water (swimming mostly), i'm getting the hang of taking photos with my Fujifilm X100VI, and have an ongoing fascination with the number 3. I'm putting together a collection of trios you can find in life.</p>
   </section>
@@ -166,15 +220,21 @@
 
 <footer>
   <div class="contact-links">
-    <a href="mailto:ellayunaj@gmail.com">ellayunaj@gmail.com</a>
-    <a href="https://www.linkedin.com/in/ella-yuna-jeong-87500056/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="Yuna%20Jeong-Resume.pdf" target="_blank" rel="noopener">CV</a>
+    <a href="https://www.linkedin.com/in/ella-yuna-jeong-87500056/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:ellayunaj@gmail.com">ellayunaj@gmail.com</a>
   </div>
   <p>© <span id="year"></span> Ella Yuna Jeong</p>
 </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.querySelector('.theme-toggle').addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
 
   document.querySelectorAll('a[href="index.html"]').forEach(link => {
     link.addEventListener('click', (e) => {
