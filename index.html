@@ -8,7 +8,7 @@
 <meta name="description" content="Ella Yuna Jeong, product designer based in Berlin. Staff Product Designer at Kittl, now building a freelance practice for early-stage startups.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   /* ============================================================
@@ -50,21 +50,43 @@
 
   .site-nav {
     display: flex;
+    align-items: center;
     gap: 24px;
   }
 
   .site-nav a {
     font-size: 15px;
+    color: var(--ink);
     text-decoration: none;
   }
 
-  .site-nav a:hover {
+  .site-nav a:not(.home-dot):hover {
     text-decoration: underline;
     text-decoration-color: var(--ink);
     text-underline-offset: 3px;
   }
 
   .site-nav a[aria-current="page"] { font-weight: 600; }
+
+  .home-dot {
+    display: inline-flex;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+
+  .home-dot .dot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #ccccff;
+  }
+
+  .home-dot[aria-current="page"],
+  .home-dot:hover {
+    outline: 8px solid rgba(255, 255, 0, 0.1);
+    outline-offset: 2px;
+  }
 
   main {
     max-width: var(--max-w);
@@ -96,14 +118,16 @@
   p:last-child { margin-bottom: 0; }
   .lede { margin-bottom: 26px; }
   .work-desc { margin: 0 0 4px; }
-  h2, .work-meta, .work-role, footer p, .name-kr { opacity: 0.45; }
+  h2, .work-meta, .work-role, footer p { opacity: 0.45; }
+  .name-kr { opacity: 0.32; }
   h2 { margin: 0 0 14px; }
   .work-role { margin: 0; }
 
   /* Korean name — the one exception, kept small and muted */
   .name-kr {
+    font-family: 'Asta Sans', 'Noto Sans KR', sans-serif;
     font-size: 27px;
-    font-weight: 400;
+    font-weight: 800;
     color: var(--ink);
   }
 
@@ -168,6 +192,8 @@
     margin-bottom: 14px;
   }
 
+  .contact-links a { font-size: 15px; }
+
   /* ---- Footer ---- */
   footer {
     max-width: var(--max-w);
@@ -188,7 +214,7 @@
 
 <header class="site-header">
   <nav class="site-nav">
-    <a href="index.html" aria-current="page">Home</a>
+    <a href="index.html" aria-current="page" class="home-dot" aria-label="Home"><span class="dot"></span></a>
     <a href="about.html">About</a>
     <a href="projects.html">Projects</a>
   </nav>
