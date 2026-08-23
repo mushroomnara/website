@@ -390,8 +390,9 @@
 
   document.querySelectorAll('a[href="/"]').forEach(link => {
     link.addEventListener('click', (e) => {
-      const current = location.pathname.split('/').pop() || 'index.html';
-      if (current === 'index.html') {
+      const segments = location.pathname.split('/').filter(Boolean);
+      const isHome = segments.length === 0 || (segments.length === 1 && segments[0] === 'index.html');
+      if (isHome) {
         e.preventDefault();
         location.reload();
       }
