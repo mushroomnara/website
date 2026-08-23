@@ -202,7 +202,7 @@
 </header>
 
 <main>
-  <p>Coming soon.</p>
+  <p id="scramble-text">Coming soon</p>
 </main>
 
 <footer>
@@ -216,6 +216,31 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function scrambleText() {
+    const el = document.getElementById('scramble-text');
+    if (!el) return;
+    const glyphs = '!<>-_\\/[]{}=+*^?#%&';
+    const finalChars = el.textContent.split('');
+    const center = (finalChars.length - 1) / 2;
+
+    el.innerHTML = finalChars
+      .map(c => `<span>${c === ' ' ? '&nbsp;' : c}</span>`)
+      .join('');
+    const spans = el.querySelectorAll('span');
+
+    spans.forEach((span, i) => {
+      if (finalChars[i] === ' ') return;
+      const resolveDelay = 150 + Math.abs(i - center) * 70;
+      const interval = setInterval(() => {
+        span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      }, 35);
+      setTimeout(() => {
+        clearInterval(interval);
+        span.textContent = finalChars[i];
+      }, resolveDelay);
+    });
+  })();
 
   document.querySelector('.theme-toggle').addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
