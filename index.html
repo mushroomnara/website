@@ -40,10 +40,15 @@
     font-size: 1rem;
     line-height: 1.5rem;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
   .site-header {
     max-width: var(--max-w);
+    width: 100%;
+    box-sizing: border-box;
     margin: 0 auto;
     padding: 32px 28px 0;
   }
@@ -85,13 +90,16 @@
   .home-dot[aria-current="page"],
   .home-dot:hover {
     outline: 8px solid rgba(255, 255, 0, 0.1);
-    outline-offset: 2px;
+    outline-offset: 0;
   }
 
   main {
+    flex: 1 0 auto;
     max-width: var(--max-w);
+    width: 100%;
     margin: 0 auto;
     padding: 64px 28px 88px;
+    box-sizing: border-box;
   }
 
   section { margin-bottom: 104px; }
@@ -197,6 +205,8 @@
   /* ---- Footer ---- */
   footer {
     max-width: var(--max-w);
+    width: 100%;
+    box-sizing: border-box;
     margin: 0 auto;
     padding: 0 28px 56px;
   }
