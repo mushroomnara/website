@@ -99,7 +99,6 @@
     font-weight: 400;
     color: var(--ink);
     margin: 0 0 18px;
-    opacity: 0.45;
   }
   p:last-child { margin-bottom: 0; }
 
@@ -111,6 +110,23 @@
     transition: text-decoration-color 0.15s ease;
   }
   a:hover { text-decoration-color: var(--ink); }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-bottom: 14px;
+  }
+
+  .contact-links a { font-size: 15px; }
+
+  footer {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 28px 56px;
+  }
+
+  footer p { font-size: 15px; opacity: 0.45; margin: 0; }
 
   @media (max-width: 480px) {
     .site-header { padding: 24px 22px 0; }
@@ -132,12 +148,24 @@
 
 <main>
   <section>
-    <h1>About</h1>
-    <p>This page is coming soon.</p>
+    <p>The action of turning an idea into something tangible has always been what makes me feel alive — the emotions and curiosities that come with the process. Somewhere along the way i found product design: same instinct, but pointed at solving a real problem for someone else — a tool that just works, a habit someone finally sticks to, a process that used to feel intimidating made simple enough to take minutes instead of hours.</p>
+    <p>I'm also drawn to the storytelling side of design — how a brand's personality gets translated into different channels and the visual expression &amp; personification of the brand itself.</p>
+    <p>Outside of work: I believe fungi ecosystems are extremely underrated, somehow all my favorite movies and shows are dystopian fiction, i love observing animals (and humans too), everything to do with psychology and water (swimming mostly), i'm getting the hang of taking photos with my Fujifilm X100VI, and have an ongoing fascination with the number 3. I'm putting together a collection of trios you can find in life.</p>
   </section>
 </main>
 
+<footer>
+  <div class="contact-links">
+    <a href="mailto:ellayunaj@gmail.com">ellayunaj@gmail.com</a>
+    <a href="https://www.linkedin.com/in/ella-yuna-jeong-87500056/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="Yuna%20Jeong-Resume.pdf" target="_blank" rel="noopener">CV</a>
+  </div>
+  <p>© <span id="year"></span> Ella Yuna Jeong</p>
+</footer>
+
 <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
   document.querySelectorAll('a[href="index.html"]').forEach(link => {
     link.addEventListener('click', (e) => {
       const current = location.pathname.split('/').pop() || 'index.html';
