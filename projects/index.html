@@ -14,8 +14,8 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Ella Yuna Jeong</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Projects — Ella Yuna Jeong</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="description" content="Ella Yuna Jeong, product designer based in Berlin.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,21 +135,15 @@
 
   main {
     flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     max-width: var(--max-w);
     width: 100%;
-    margin: 0 auto;
-    padding: 64px 28px 88px;
     box-sizing: border-box;
-  }
-
-  section { margin-bottom: 104px; }
-
-  h1 {
-    font-weight: 600;
-    color: var(--ink);
-    font-size: 27px;
-    letter-spacing: -0.01em;
-    margin: 0 0 26px;
+    margin: 0 auto;
+    padding: 28px;
+    text-align: center;
   }
 
   p {
@@ -190,9 +184,6 @@
 
   @media (max-width: 480px) {
     .site-header { padding: 24px 22px 0; }
-    main { padding: 48px 22px 64px; }
-    section { margin-bottom: 80px; }
-    h1 { font-size: 22px; }
   }
 </style>
 </head>
@@ -200,9 +191,9 @@
 
 <header class="site-header">
   <nav class="site-nav">
-    <a href="index.html" class="home-dot" aria-label="Home"><span class="dot"></span></a>
-    <a href="about.html" aria-current="page">About</a>
-    <a href="projects.html">Projects</a>
+    <a href="/" class="home-dot" aria-label="Home"><span class="dot"></span></a>
+    <a href="/about">About</a>
+    <a href="/projects" aria-current="page">Projects</a>
   </nav>
   <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
     <span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></span>
@@ -211,16 +202,12 @@
 </header>
 
 <main>
-  <section>
-    <p>The action of turning an idea into something tangible has always been what makes me feel alive — the emotions and curiosities that come with the process. Somewhere along the way I found product design: same instinct, but pointed at solving a real problem for people.</p>
-    <p>I'm also drawn to the storytelling side of design — how a brand gets personified and translated across mediums, and how design itself becomes a tool for communication and connection.</p>
-    <p>Outside of work: I believe fungi ecosystems are extremely underrated, somehow all my favorite movies and shows are dystopian fiction, I love observing animals (and humans too), everything to do with psychology and water (swimming mostly), I'm getting the hang of taking photos with my Fujifilm X100VI, and have an ongoing fascination with the number 3. I'm putting together a collection of trios you can find in life.</p>
-  </section>
+  <p id="scramble-text">Coming soon</p>
 </main>
 
 <footer>
   <div class="contact-links">
-    <a href="Yuna%20Jeong-Resume.pdf" target="_blank" rel="noopener">CV</a>
+    <a href="/Yuna%20Jeong-Resume.pdf" target="_blank" rel="noopener">CV</a>
     <a href="https://www.linkedin.com/in/ella-yuna-jeong-87500056/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="mailto:ellayunaj@gmail.com">ellayunaj@gmail.com</a>
   </div>
@@ -230,13 +217,46 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  (function scrambleText() {
+    const el = document.getElementById('scramble-text');
+    if (!el) return;
+    const glyphs = '!<>-_\\/[]{}=+*^?#%&';
+    const finalChars = el.textContent.split('');
+    const center = (finalChars.length - 1) / 2;
+    const maxDistance = Math.max(...finalChars.map((_, i) => Math.abs(i - center)));
+    const totalDuration = 220 + maxDistance * 90;
+    const pauseBetweenLoops = 3500;
+
+    el.innerHTML = finalChars
+      .map(c => `<span>${c === ' ' ? '&nbsp;' : c}</span>`)
+      .join('');
+    const spans = el.querySelectorAll('span');
+
+    function run() {
+      spans.forEach((span, i) => {
+        if (finalChars[i] === ' ') return;
+        const resolveDelay = 220 + Math.abs(i - center) * 90;
+        const interval = setInterval(() => {
+          span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        }, 45);
+        setTimeout(() => {
+          clearInterval(interval);
+          span.textContent = finalChars[i];
+        }, resolveDelay);
+      });
+    }
+
+    run();
+    setInterval(run, totalDuration + pauseBetweenLoops);
+  })();
+
   document.querySelector('.theme-toggle').addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
 
-  document.querySelectorAll('a[href="index.html"]').forEach(link => {
+  document.querySelectorAll('a[href="/"]').forEach(link => {
     link.addEventListener('click', (e) => {
       const current = location.pathname.split('/').pop() || 'index.html';
       if (current === 'index.html') {
