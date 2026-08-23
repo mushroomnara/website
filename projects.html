@@ -223,23 +223,31 @@
     const glyphs = '!<>-_\\/[]{}=+*^?#%&';
     const finalChars = el.textContent.split('');
     const center = (finalChars.length - 1) / 2;
+    const maxDistance = Math.max(...finalChars.map((_, i) => Math.abs(i - center)));
+    const totalDuration = 220 + maxDistance * 90;
+    const pauseBetweenLoops = 3500;
 
     el.innerHTML = finalChars
       .map(c => `<span>${c === ' ' ? '&nbsp;' : c}</span>`)
       .join('');
     const spans = el.querySelectorAll('span');
 
-    spans.forEach((span, i) => {
-      if (finalChars[i] === ' ') return;
-      const resolveDelay = 150 + Math.abs(i - center) * 70;
-      const interval = setInterval(() => {
-        span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-      }, 35);
-      setTimeout(() => {
-        clearInterval(interval);
-        span.textContent = finalChars[i];
-      }, resolveDelay);
-    });
+    function run() {
+      spans.forEach((span, i) => {
+        if (finalChars[i] === ' ') return;
+        const resolveDelay = 220 + Math.abs(i - center) * 90;
+        const interval = setInterval(() => {
+          span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        }, 45);
+        setTimeout(() => {
+          clearInterval(interval);
+          span.textContent = finalChars[i];
+        }, resolveDelay);
+      });
+    }
+
+    run();
+    setInterval(run, totalDuration + pauseBetweenLoops);
   })();
 
   document.querySelector('.theme-toggle').addEventListener('click', () => {
