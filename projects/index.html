@@ -207,12 +207,17 @@
     max-width: 260px;
   }
 
+  .password-field {
+    position: relative;
+    width: 100%;
+  }
+
   .password-gate input {
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
     font-size: 15px;
-    padding: 10px 14px;
+    padding: 10px 40px 10px 14px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--bg);
@@ -222,16 +227,27 @@
   .password-gate input:focus { outline: none; border-color: var(--ink); }
 
   .password-gate button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    padding: 0;
     font-family: inherit;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px 22px;
+    font-size: 16px;
     border: none;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--bg);
+    border-radius: 50%;
+    background: none;
+    color: var(--ink);
     cursor: pointer;
+    transition: opacity 0.15s ease;
   }
+
+  .password-gate button:hover { opacity: 0.6; }
 
   .password-error { opacity: 0.6; margin: 0; }
 
@@ -289,8 +305,10 @@
 
 <div class="password-gate" id="password-gate">
   <form id="password-form">
-    <input type="password" id="password-input" placeholder="Enter passcode" autocomplete="off">
-    <button type="submit">Unlock</button>
+    <div class="password-field">
+      <input type="password" id="password-input" placeholder="Enter password" autocomplete="off">
+      <button type="submit" aria-label="Unlock">→</button>
+    </div>
     <p class="password-error" id="password-error" style="display: none;">Incorrect passcode.</p>
   </form>
 </div>
@@ -312,7 +330,7 @@
       <div class="project-company">Volley (Acquired by Weekend)</div>
     </div>
     <div class="project-right">
-      <p class="project-desc">A karaoke party game for TV, built for Roku devices.</p>
+      <p class="project-desc">A karaoke party game for Roku TV.</p>
       <a class="project-link" href="https://www.figma.com/design/1np7kmIRNQKpsKx4nrNKF0/Karaoke-by-Volley?node-id=78-4812&t=3UNMMmcWyxUNt9tf-1" target="_blank" rel="noopener">Figma file ↗</a>
       <a class="project-link" href="https://www.figma.com/proto/1np7kmIRNQKpsKx4nrNKF0/Karaoke-by-Volley?node-id=807-6610&page-id=33%3A14583&t=Mqf4K87g0p0RI1iG-1" target="_blank" rel="noopener">Early concept prototype ↗</a>
     </div>
@@ -323,13 +341,13 @@
       <div class="project-company">Wabi Sabi Solutions</div>
     </div>
     <div class="project-right">
-      <p class="project-desc">Brand identity, desktop and mobile app design, and marketing for this AI productivity app.</p>
+      <p class="project-desc">Brand identity, desktop and mobile app design, and ads for a private AI platform that runs locally on your device.</p>
       <p class="project-pending">Coming soon</p>
     </div>
   </div>
   <div class="project-row">
     <div class="project-left">
-      <div class="project-name">Kittl</div>
+      <div class="project-name">Various</div>
       <div class="project-company">Kittl</div>
     </div>
     <div class="project-right">
@@ -358,11 +376,16 @@
     const form = document.getElementById('password-form');
     const input = document.getElementById('password-input');
     const error = document.getElementById('password-error');
+    const submitBtn = form.querySelector('button');
 
     function unlock() {
       gate.style.display = 'none';
       main.style.display = 'block';
     }
+
+    input.addEventListener('input', () => {
+      submitBtn.style.display = input.value.length > 0 ? 'flex' : 'none';
+    });
 
     try {
       if (localStorage.getItem('projects-unlocked') === 'true') {
