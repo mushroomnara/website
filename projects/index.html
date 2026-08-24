@@ -140,6 +140,7 @@
     box-sizing: border-box;
     margin: 0 auto;
     padding: 64px 28px 88px;
+    animation: fadeInUp 0.4s ease-out;
   }
 
   p {
@@ -196,6 +197,16 @@
     margin: 0 auto;
     padding: 28px;
     text-align: center;
+    animation: fadeInUp 0.4s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .password-gate, main { animation: none; }
   }
 
   .password-gate form {
@@ -212,44 +223,66 @@
     width: 100%;
   }
 
+  .password-field.shake { animation: shake 0.4s ease-in-out; }
+
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .password-field.shake { animation: none; }
+  }
+
   .password-gate input {
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
     font-size: 15px;
-    padding: 10px 40px 10px 14px;
+    padding: 17px 14px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--bg);
     color: var(--ink);
   }
 
-  .password-gate input:focus { outline: none; border-color: var(--ink); }
+  .password-gate input:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--ink) 75%, var(--bg));
+  }
 
   .password-gate button {
     display: none;
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: 6px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 26px;
-    height: 26px;
+    box-sizing: border-box;
+    width: 30px;
+    height: 30px;
+    margin: 0;
     padding: 0;
     font-family: inherit;
     font-size: 16px;
+    line-height: 1;
+    appearance: none;
+    -webkit-appearance: none;
     border: none;
-    border-radius: 50%;
-    background: none;
-    color: var(--ink);
+    outline: none;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--bg);
     cursor: pointer;
-    transition: opacity 0.15s ease;
+    transition: background-color 0.15s ease;
   }
 
-  .password-gate button:hover { opacity: 0.6; }
-
-  .password-error { opacity: 0.6; margin: 0; }
+  .password-gate button:hover {
+    background: color-mix(in srgb, var(--ink) 80%, var(--bg));
+  }
 
   @media (max-width: 480px) {
     .project-row { flex-direction: column; gap: 4px; }
@@ -307,9 +340,8 @@
   <form id="password-form">
     <div class="password-field">
       <input type="password" id="password-input" placeholder="Enter password" autocomplete="off">
-      <button type="submit" aria-label="Unlock">→</button>
+      <button type="submit" aria-label="Unlock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
     </div>
-    <p class="password-error" id="password-error" style="display: none;">Incorrect passcode.</p>
   </form>
 </div>
 
@@ -375,8 +407,8 @@
     const main = document.getElementById('main-content');
     const form = document.getElementById('password-form');
     const input = document.getElementById('password-input');
-    const error = document.getElementById('password-error');
     const submitBtn = form.querySelector('button');
+    const field = document.querySelector('.password-field');
 
     function unlock() {
       gate.style.display = 'none';
@@ -399,9 +431,11 @@
         try { localStorage.setItem('projects-unlocked', 'true'); } catch (err) {}
         unlock();
       } else {
-        error.style.display = 'block';
         input.value = '';
         input.focus();
+        field.classList.remove('shake');
+        void field.offsetWidth;
+        field.classList.add('shake');
       }
     });
   })();
