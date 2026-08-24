@@ -176,7 +176,64 @@
 
   .project-desc { margin: 0 0 4px; }
 
-  .project-link { font-size: 15px; }
+  .project-link { font-size: 15px; display: block; }
+  .project-link + .project-link { margin-top: 4px; }
+
+  .project-pending {
+    font-size: 15px;
+    opacity: 0.45;
+    margin: 0;
+  }
+
+  .password-gate {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: var(--max-w);
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .password-gate form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .password-gate input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .password-gate input:focus { outline: none; border-color: var(--ink); }
+
+  .password-gate button {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+  }
+
+  .password-error { opacity: 0.6; margin: 0; }
 
   @media (max-width: 480px) {
     .project-row { flex-direction: column; gap: 4px; }
@@ -230,15 +287,54 @@
   </button>
 </header>
 
-<main>
+<div class="password-gate" id="password-gate">
+  <form id="password-form">
+    <input type="password" id="password-input" placeholder="Enter passcode" autocomplete="off">
+    <button type="submit">Unlock</button>
+    <p class="password-error" id="password-error" style="display: none;">Incorrect passcode.</p>
+  </form>
+</div>
+
+<main id="main-content" style="display: none;">
   <div class="project-row">
     <div class="project-left">
-      <div class="project-name">Learner's App UX &amp; UI improvements</div>
+      <div class="project-name">Learner's App</div>
       <div class="project-company">Sharpist</div>
     </div>
     <div class="project-right">
       <p class="project-desc">Concept designs improving usability and visual clarity across the learner's mobile app.</p>
       <a class="project-link" href="https://www.figma.com/deck/h4Nebgl10j56bpViqXWLbJ" target="_blank" rel="noopener">Figma deck ↗</a>
+    </div>
+  </div>
+  <div class="project-row">
+    <div class="project-left">
+      <div class="project-name">Karaoke</div>
+      <div class="project-company">Volley (Acquired by Weekend)</div>
+    </div>
+    <div class="project-right">
+      <p class="project-desc">A karaoke party game for TV, built for Roku devices.</p>
+      <a class="project-link" href="https://www.figma.com/design/1np7kmIRNQKpsKx4nrNKF0/Karaoke-by-Volley?node-id=78-4812&t=3UNMMmcWyxUNt9tf-1" target="_blank" rel="noopener">Figma file ↗</a>
+      <a class="project-link" href="https://www.figma.com/proto/1np7kmIRNQKpsKx4nrNKF0/Karaoke-by-Volley?node-id=807-6610&page-id=33%3A14583&t=Mqf4K87g0p0RI1iG-1" target="_blank" rel="noopener">Early concept prototype ↗</a>
+    </div>
+  </div>
+  <div class="project-row">
+    <div class="project-left">
+      <div class="project-name">Mindkeep.ai</div>
+      <div class="project-company">Wabi Sabi Solutions</div>
+    </div>
+    <div class="project-right">
+      <p class="project-desc">Brand identity, desktop and mobile app design, and marketing for this AI productivity app.</p>
+      <p class="project-pending">Coming soon</p>
+    </div>
+  </div>
+  <div class="project-row">
+    <div class="project-left">
+      <div class="project-name">Kittl</div>
+      <div class="project-company">Kittl</div>
+    </div>
+    <div class="project-right">
+      <p class="project-desc">Core editor experience and design system work as Staff Product Designer.</p>
+      <p class="project-pending">Coming soon</p>
     </div>
   </div>
 </main>
@@ -254,6 +350,38 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function passwordGate() {
+    const PASSCODE = 'firehorse';
+    const gate = document.getElementById('password-gate');
+    const main = document.getElementById('main-content');
+    const form = document.getElementById('password-form');
+    const input = document.getElementById('password-input');
+    const error = document.getElementById('password-error');
+
+    function unlock() {
+      gate.style.display = 'none';
+      main.style.display = 'block';
+    }
+
+    try {
+      if (localStorage.getItem('projects-unlocked') === 'true') {
+        unlock();
+      }
+    } catch (err) {}
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.value === PASSCODE) {
+        try { localStorage.setItem('projects-unlocked', 'true'); } catch (err) {}
+        unlock();
+      } else {
+        error.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    });
+  })();
 
   document.querySelector('.theme-toggle').addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
